@@ -150,7 +150,7 @@ function build() {
 
   // 50 operational clusters: HAPS -> Drone -> Ground Station.
   for (let c = 0; c < 50; c++) {
-    const region = REGIONS[c % REGIONS.length];
+    const region = REGIONS[c % REGIONS.length]!;
     const jitterLat = (rnd() - 0.5) * 4;
     const jitterLon = (rnd() - 0.5) * 6;
     const lat = Math.max(-78, Math.min(78, region.lat + jitterLat));
