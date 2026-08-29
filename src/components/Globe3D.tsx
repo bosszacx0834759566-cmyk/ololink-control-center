@@ -1,6 +1,6 @@
 import { Canvas, useFrame, useLoader, type ThreeEvent } from "@react-three/fiber";
 import { OrbitControls, Line, Html } from "@react-three/drei";
-import { Suspense, useEffect, useMemo, useRef } from "react";
+import { Suspense, useEffect, useMemo, useRef, type ReactElement } from "react";
 import * as THREE from "three";
 import earthMap from "../assets/earth-map.jpg";
 import {
@@ -48,7 +48,7 @@ function Earth() {
   );
 }
 
-const GEOM: Record<AssetKind, JSX.Element> = {
+const GEOM: Record<AssetKind, ReactElement> = {
   leo: <boxGeometry args={[0.012, 0.006, 0.006]} />,
   haps: <coneGeometry args={[0.007, 0.02, 6]} />,
   drone: <boxGeometry args={[0.014, 0.002, 0.005]} />,
