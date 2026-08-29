@@ -35,7 +35,7 @@ export type Asset = OrbitAsset | FixedAsset;
 
 export const EARTH_RADIUS_KM = 6371;
 /** Sub-100km layers are exaggerated so HAPS/drones stay readable on screen. */
-export const LOW_ALT_EXAGGERATION = 90;
+export const LOW_ALT_EXAGGERATION = 26;
 
 export const KIND_LABEL: Record<AssetKind, string> = {
   leo: "LEO Satellite",
