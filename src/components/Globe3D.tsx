@@ -139,8 +139,15 @@ function OrbitRings() {
 }
 
 function ClusterLinks() {
-  const pts = useMemo(() => {
-    const out: THREE.Vector3[] = [];
+  const { settings } = useMission();
+  const ref = useRef<THREE.BufferAttribute>(null);
+  const array = useMemo(() => new Float32Array(50 * 4 * 3), []);
+
+  useFrame(() => {
+    const attr = ref.current;
+    if (!attr) return;
+    const t = missionTime(settings.timeScale);
+    let o = 0;
     for (let c = 0; c < 50; c++) {
       const haps = ASSETS_BY_KIND.haps[c];
       const drone = ASSETS_BY_KIND.drone[c];
@@ -151,23 +158,23 @@ function ClusterLinks() {
         [drone, gs],
       ] as const) {
         for (const n of [a, b]) {
-          const g = geoAt(n, 0);
-          const v = geoToVec3(g.lat, g.lon, sceneRadius(g.altitudeKm, n.kind));
-          out.push(new THREE.Vector3(v[0], v[1], v[2]));
+          const g = geoAt(n, t);
+          geoToVec3(g.lat, g.lon, sceneRadius(g.altitudeKm, n.kind), tmp);
+          array[o++] = tmp[0];
+          array[o++] = tmp[1];
+          array[o++] = tmp[2];
         }
       }
     }
-    return out;
-  }, []);
+    attr.needsUpdate = true;
+  });
+
   return (
     <lineSegments frustumCulled={false}>
       <bufferGeometry>
-        <bufferAttribute
-          attach="attributes-position"
-          args={[new Float32Array(pts.flatMap((v) => [v.x, v.y, v.z])), 3]}
-        />
+        <bufferAttribute ref={ref} attach="attributes-position" args={[array, 3]} />
       </bufferGeometry>
-      <lineBasicMaterial color="#4de0c0" transparent opacity={0.35} />
+      <lineBasicMaterial color="#4de0c0" transparent opacity={0.5} />
     </lineSegments>
   );
 }
